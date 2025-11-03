@@ -3,4 +3,4 @@ using MediatR;
 
 namespace Application.Features.SensorDataFeature.AddSensorData;
 
-public sealed record AddSensorDataCommand(Guid SensorId , object Value, DateTimeOffset TimeStamp) : IRequest<IResult>;
+public sealed record AddSensorDataCommand(Guid SensorId , decimal Value, DateTimeOffset TimeStamp) : IRequest<IResult>;

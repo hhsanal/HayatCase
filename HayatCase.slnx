@@ -10,4 +10,5 @@
     <Project Path="Infrastructure/Infrastructure.csproj" />
     <Project Path="Persistance/Persistance.csproj" />
   </Folder>
+  <Project Path="SimulationWorker/SimulationWorker.csproj" Id="9cc38cbe-f746-4286-aa4d-0c12a08502d1" />
 </Solution>

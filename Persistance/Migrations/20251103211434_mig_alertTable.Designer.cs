@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistance.Context;
 
@@ -11,9 +12,11 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251103211434_mig_alertTable")]
+    partial class mig_alertTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,7 +79,7 @@ namespace Persistance.Migrations
                     b.Property<bool>("IsAcknowledged")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("SensorDataId")
+                    b.Property<Guid>("SensorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Value")
@@ -84,7 +87,7 @@ namespace Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SensorDataId");
+                    b.HasIndex("SensorId");
 
                     b.ToTable("SensorAlerts");
                 });
@@ -119,13 +122,13 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.SensorAlert", b =>
                 {
-                    b.HasOne("Domain.Entities.SensorData", "SensorData")
+                    b.HasOne("Domain.Entities.FactorySensor", "Sensor")
                         .WithMany()
-                        .HasForeignKey("SensorDataId")
+                        .HasForeignKey("SensorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SensorData");
+                    b.Navigation("Sensor");
                 });
 
             modelBuilder.Entity("Domain.Entities.SensorData", b =>
