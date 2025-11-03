@@ -5,55 +5,62 @@ using System.Linq.Expressions;
 
 namespace Persistance.Repositories;
 
-public class EfGenericRepository<T>(AppDbContext _context) : IRepository<T> where T : class
+public class EfGenericRepository<T> : IRepository<T> where T : class
 {
+    protected readonly AppDbContext _context;
+    public EfGenericRepository(AppDbContext context)
+    {
+        _context = context;
+    }
     public async Task AddAsync(T Entity, CancellationToken cancellationToken = default)
     {
         await _context.Set<T>().AddAsync(Entity, cancellationToken);
-        await _context.SaveChangesAsync();
     }
 
     public async Task AddRangeAsync(List<T> EntityList, CancellationToken cancellationToken = default)
     {
         await _context.Set<T>().AddRangeAsync(EntityList, cancellationToken);
-        await _context.SaveChangesAsync();
+    }
+
+    public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<T>().AsNoTracking().AnyAsync(expression, cancellationToken);
+    }
+
+    public async Task<T> GetOnlyRecordAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<T>().FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<T> FindAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<T>().Where(expression).FirstOrDefaultAsync(cancellationToken);
-
+        return await _context.Set<T>().FirstOrDefaultAsync(expression, cancellationToken);
     }
-    public async Task<T> GetSingleRecord(CancellationToken cancellationToken = default)
+
+    public async Task<List<T>> GetAllAsync()
     {
-        return await _context.Set<T>().FirstOrDefaultAsync(cancellationToken);
-
+        return await _context.Set<T>().AsNoTracking().ToListAsync();
     }
-    public IQueryable<T> GetAll()
+
+    public async Task<List<T>> GetWhere(Expression<Func<T, bool>> expression)
     {
-
-        return _context.Set<T>().AsNoTracking().AsQueryable();
+        return await _context.Set<T>().AsNoTracking().Where(expression).ToListAsync();
     }
-
-    public IQueryable<T> GetWhere(Expression<Func<T, bool>> expression)
-    {
-        return _context.Set<T>().Where(expression).AsNoTracking().AsQueryable();
-
-    }
-
     public void Remove(T Entity)
     {
-        _context.Remove(Entity);
-        _context.SaveChanges();
+        _context.Entry(Entity).State = EntityState.Deleted;
     }
 
     public void Update(T Entity)
     {
-        _context.Update(Entity);
-        _context.SaveChanges();
+        _context.Entry(Entity).State = EntityState.Modified;
     }
-    public async Task<List<T>> GetWhereAsync(Expression<Func<T, bool>> expression)
+    public void UpdateRange(List<T> Entities)
     {
-        return await _context.Set<T>().Where(expression).AsNoTracking().ToListAsync();
+        foreach (var item in Entities)
+        {
+            _context.Entry(item).State = EntityState.Modified;
+        }
     }
+
 }

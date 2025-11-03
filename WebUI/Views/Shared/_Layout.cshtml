@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HayatCase</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebUI.styles.css" asp-append-version="true" />
+	<link rel="shortcut icon" type="image/x-icon" href="~/navlogo.svg" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* Alt çizgiyi gradient yapıyoruz */
+        .custom-navbar {
+            border-bottom: 4px solid transparent;
+            border-image: linear-gradient(90deg, #354A9D, #268D8A, #19A872) 1;
+        }
+
+            /* Link stilleri */
+            .custom-navbar .nav-link {
+                position: relative;
+                font-weight: 500;
+                padding: 8px 14px;
+                transition: color 0.2s ease;
+            }
+
+                .custom-navbar .nav-link:hover {
+                    color: #19A872 !important;
+                }
+
+            /* Hover’da alttan ince bir çizgi efekti */
+            .custom-navbar .nav-link-underline::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 0;
+                height: 2px;
+                background: linear-gradient(90deg, #354A9D, #268D8A, #19A872);
+                transition: width 0.3s ease;
+            }
+
+            .custom-navbar .nav-link-underline:hover::after {
+                width: 100%;
+            }
+
+            /* Aktif sayfa vurgusu */
+            .custom-navbar .nav-link.active {
+                color: #268D8A !important;
+                font-weight: 600;
+            }
+    </style>
+
+
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-white custom-navbar shadow-sm mb-3">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center">
+                    <img src="~/navlogo.svg" class="img-fluid me-2" style="width:40px; height:auto;" />
+                    <a class="navbar-brand fw-bold text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">
+                        Hayat<span class="text-secondary">Case</span>
+                    </a>
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-dark nav-link-underline" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-dark nav-link-underline" asp-controller="FactorySensor" asp-action="Index">Sensörler</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-dark nav-link-underline" asp-controller="Home" asp-action="Privacy">Hata Logları</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-dark nav-link-underline" asp-controller="Home" asp-action="Privacy">Sensör Uyarıları</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-dark nav-link-underline" asp-controller="FactorySensor" asp-action="AllData">Tüm Veriler</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - WebUI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

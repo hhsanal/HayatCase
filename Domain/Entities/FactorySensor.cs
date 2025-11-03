@@ -10,4 +10,5 @@ public class FactorySensor : BaseEntity
     public SensorUnit Unit { get; set; }
     public string Location { get; set; }
     public bool IsActive { get; set; }
+    public decimal ThresholdValue { get; set; }
 }

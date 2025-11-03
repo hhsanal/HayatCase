@@ -1,0 +1,86 @@
+﻿@using Application.Features.FactorySensorFeature.GetFactorySensorList
+@using Domain.Enums
+@model List<GetFactorySensorListResponse>
+@{
+	ViewData["Title"] = "Index";
+}
+<style>
+    .btn-gradient {
+        background: linear-gradient(45deg, #354A9D, #268D8A, #19A872) !important; /* sol alt → sağ üst */
+        border: none !important;
+        color: #fff !important;
+        transition: none !important;
+    }
+
+        /* Hover, focus ve active durumlarında renk sabit kalacak */
+        .btn-gradient:hover,
+        .btn-gradient:focus,
+        .btn-gradient:active {
+            background: linear-gradient(45deg, #354A9D, #268D8A, #19A872) !important;
+            color: #fff !important;
+            box-shadow: none !important;
+        }
+</style>
+
+
+<nav class="navbar navbar-expand-lg border-none py-2 px-3 mb-2">
+	<div class="container-fluid">
+
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb mb-0">
+				<li class="breadcrumb-item"><a href="#">Ana Sayfa</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Sensör Listesi</li>
+			</ol>
+		</nav>
+
+		<div class="d-flex align-items-center gap-2 ms-auto">
+			@* <button class="btn btn-success btn-sm" id="btnAdd">
+				<i class="bi bi-plus-lg"></i> Ekle
+			</button> *@
+			<button class="btn btn-outline-secondary btn-sm" id="btnRefresh">
+				<i class="bi bi-arrow-clockwise"></i> Yenile
+			</button>
+		</div>
+	</div>
+</nav>
+
+<div class="row">
+	@foreach (var sensor in Model)
+	{
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card h-100 border border-2" style="border-color:#1A7B83">
+                <div class="row g-0 h-100">
+                    <!-- Görsel -->
+                    <div class="col-4 d-flex justify-content-center align-items-center p-2">
+                        <img src="~/@(sensor.Unit == SensorUnit.Celsius ? "temperature.jpg" :
+                                                        sensor.Unit == SensorUnit.Percentage ? "moisture.jpg" : "default.jpg")"
+                             class="img-fluid rounded-start"
+                             alt="Sensör Görseli"
+                             style="max-height: 100px; object-fit: contain;">
+                    </div>
+
+                    <!-- İçerik -->
+                    <div class="col-8 d-flex flex-column">
+                        <div class="card-body flex-grow-1">
+                            <h5 class="card-title">@sensor.Code</h5>
+                            <p class="card-text text-truncate" title="@sensor.Description">@sensor.Description</p>
+                            <p class="card-text">
+                                <small class="text-muted">@sensor.Location</small>
+                            </p>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-top-0 p-2 d-flex justify-content-end">
+                            <a class="btn btn-gradient btn-sm" asp-action="DataList" asp-route-SensorId="@sensor.Id">
+                                <i class="bi bi-eye"></i> Verileri Gör
+                            </a>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+	}
+
+</div>

@@ -11,4 +11,5 @@ public class AppDbContext : DbContext , IUnitOfWork
     }
 
     public DbSet<FactorySensor> FactorySensors { get; set; }
+    public DbSet<SensorData> SensorDatas { get; set; }
 }

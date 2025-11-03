@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/Src/">
-    <Project Path="WebAPI/WebAPI.csproj" />
+    <Project Path="WebUI/WebUI.csproj" />
   </Folder>
   <Folder Name="/Src/Core/">
     <Project Path="Application/Application.csproj" />

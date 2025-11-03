@@ -9,6 +9,4 @@ public class EfFactorySensorRepository : EfGenericRepository<FactorySensor>, IFa
     public EfFactorySensorRepository(AppDbContext context) : base(context)
     {
     }
-
-
 }

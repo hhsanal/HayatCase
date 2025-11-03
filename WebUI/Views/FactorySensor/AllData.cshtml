@@ -1,0 +1,63 @@
+﻿@using Application.Features.SensorDataFeature.GetAllSensorData
+@using Domain.Enums
+@model List<GetAllSensorDataResponse>
+
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <h5 class="card-title p-3 mb-0">Tüm Sensör Verileri</h5>
+                <div class="table-wrapper">
+                    <table class="table table-striped table-hover mb-0">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th>Sensör Kodu</th>
+                                <th>TimeStamp</th>
+                                <th>Gecikme Süresi</th>
+                                <th>Değer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var data in Model)
+                            {
+                                var rowClass = data.isThresholdExceeded ? "text-bg-danger" : "";
+                                var valueDisplay = data.unit switch
+                                {
+                                    SensorUnit.Celsius => data.Value.HasValue ? $"{data.Value.Value} °C" : "-",
+                                    SensorUnit.Percentage => data.Value.HasValue ? $"{data.Value.Value} %" : "-",
+                                    _ => data.Value.HasValue ? data.Value.Value.ToString() : "-"
+                                };
+
+                                <tr class="@rowClass">
+                                    <td>@data.SensorCode</td>
+                                    <td>@data.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                    <td>@data.DelayTime</td>
+                                    <td><span class="fw-bold">@valueDisplay</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+   
+    .table-wrapper {
+        max-height: 650px; 
+        overflow-y: auto;
+        overflow-x: auto;
+        display: block;
+    }
+
+ 
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+  
+    table.table {
+        min-width: 600px; 
+    }
+</style>
