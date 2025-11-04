@@ -19,6 +19,14 @@ Amaç; sensör verilerini işleyip, eşik değerlerini izleyen, anomali tespiti 
 Projeyi yerel ortamında çalıştırmak için aşağıdaki adımları izle:
 
 ### 1️ Reponun klonlanması
-```bash
 git clone https://github.com/hhsanal/HayatCase.git
 cd HayatCase
+
+### 2 Bağımlılıkların yüklenmesi
+dotnet restore
+
+### 3 Veritabanı bağlantısını güncelle
+WebUI katmanında ki appsettings.json dosyasında ve Persistance katmanında ki ApplicationDbContextFactory
+içerisinde bulunan veritabanı bağlantılarını kendine göre güncelle
+
+
