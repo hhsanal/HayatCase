@@ -18,6 +18,7 @@ Amaç; sensör verilerini işleyip, eşik değerlerini izleyen, anomali tespiti 
 Proje, katmanlı mimari yaklaşımıyla geliştirilmiştir:
 - **Domain**: Temel entity sınıfları ve modeller.
 - **Application**: İş mantığı, MediatR handler'ları ve servis arayüzleri.
+- **AInfrastructure**: Dış kaynaklarla iletişim (bu proje için seed data genertaion işlemi yapıldı).
 - **Persistance**: Entity Framework Core context, repository ve migration yapısı.
 - **WebUI**: MVC tabanlı web arayüzü (Dashboard, Alerts, History sayfaları).
 - **SimulationWorker**: Sensör verilerini belirli aralıklarla üreten background servis.
