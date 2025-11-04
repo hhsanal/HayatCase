@@ -19,7 +19,6 @@ public class AppDbContext : DbContext , IUnitOfWork
             if (entry.State == EntityState.Added)
             {
                 entry.Property(x => x.CreatedDate).CurrentValue = DateTime.UtcNow;
-               
             }
 
             if (entry.State == EntityState.Deleted)

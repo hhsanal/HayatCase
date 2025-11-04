@@ -8,11 +8,12 @@ namespace SimulationWorker
         private readonly ILogger<Worker> _logger;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly Random _random = new Random();
-
-        public Worker(ILogger<Worker> logger, IHttpClientFactory httpClientFactory)
+        private readonly string _apiBaseUrl;
+        public Worker(ILogger<Worker> logger, IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _logger = logger;
             _httpClientFactory = httpClientFactory;
+            _apiBaseUrl = configuration["Api:BaseUrl"];
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -34,7 +35,7 @@ namespace SimulationWorker
                     };
 
                     var httpClient = _httpClientFactory.CreateClient();
-                    var response = await httpClient.PostAsJsonAsync("https://localhost:44392/api/SensorData", sensorData, stoppingToken);
+                    var response = await httpClient.PostAsJsonAsync($"{_apiBaseUrl}/api/SensorData", sensorData, stoppingToken);
 
                     response.EnsureSuccessStatusCode();
                 }

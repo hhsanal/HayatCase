@@ -2,134 +2,134 @@
 @model DashboardStatisticVm
 
 
-        <div class="row g-3">
+<div class="row g-3">
 
-            <!-- Toplam Sensör Sayısı -->
-            <div class="col-md-3 col-sm-6">
-                <div class="card text-center shadow-sm gradient-card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2">Toplam Sensör</h6>
-                        <h3 class="card-title">@Model.TotalSensorCount</h3>
-                    </div>
-                </div>
-            </div>
+	<!-- Toplam Sensör Sayısı -->
+	<div class="col-md-3 col-sm-6">
+		<div class="card text-center shadow-sm gradient-card">
+			<div class="card-body">
+				<h6 class="card-subtitle mb-2">Toplam Sensör</h6>
+				<h3 class="card-title">@Model.TotalSensorCount</h3>
+			</div>
+		</div>
+	</div>
 
-            <!-- Aktif Sensör Sayısı -->
-            <div class="col-md-3 col-sm-6">
-                <div class="card text-center shadow-sm gradient-card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2">Aktif Sensör</h6>
-                        <h3 class="card-title">@Model.ActiveSensorCount</h3>
-                    </div>
-                </div>
-            </div>
+	<!-- Aktif Sensör Sayısı -->
+	<div class="col-md-3 col-sm-6">
+		<div class="card text-center shadow-sm gradient-card">
+			<div class="card-body">
+				<h6 class="card-subtitle mb-2">Aktif Sensör</h6>
+				<h3 class="card-title">@Model.ActiveSensorCount</h3>
+			</div>
+		</div>
+	</div>
 
-            <!-- Toplam Veri Sayısı -->
-            <div class="col-md-3 col-sm-6">
-                <div class="card text-center shadow-sm gradient-card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2">Toplam Veri</h6>
-                        <h3 class="card-title">@Model.TotalDataCount</h3>
-                    </div>
-                </div>
-            </div>
+	<!-- Toplam Veri Sayısı -->
+	<div class="col-md-3 col-sm-6">
+		<div class="card text-center shadow-sm gradient-card">
+			<div class="card-body">
+				<h6 class="card-subtitle mb-2">Toplam Veri</h6>
+				<h3 class="card-title">@Model.TotalDataCount</h3>
+			</div>
+		</div>
+	</div>
+	<!-- Ortalama Gecikme -->
+	<div class="col-md-3 col-sm-6">
+		<div class="card text-center shadow-sm gradient-card">
+			<div class="card-body">
+				<h6 class="card-subtitle mb-2">Ortalama Gecikme (sn)</h6>
+				<h3 class="card-title">@Model.AverageLatency.ToString("0")</h3>
+			</div>
+		</div>
+	</div>
+
+	<!-- Ortalama Sıcaklık -->
+	<div class="col-md-3 col-sm-6">
+		<div class="card text-center shadow-sm gradient-card">
+			<div class="card-body">
+				<h6 class="card-subtitle mb-2">Ortalama Sıcaklık (°C)</h6>
+				<h3 class="card-title">@Model.AverageReadingTemperatureValue.ToString("0.00")</h3>
+			</div>
+		</div>
+	</div>
+	<!-- Max / Min Sıcaklık -->
+	<div class="col-md-3 col-sm-6">
+		<div class="card shadow-sm gradient-card">
+			<div class="card-body">
+				<h6 class="card-subtitle mb-2">Sıcaklık (°C)</h6>
+				<p class="mb-1">Max: <b>@Model.MaxTemperatureValue.ToString("0.00")</b></p>
+				<p class="mb-0">Min: <b>@Model.MinTemperatureValue.ToString("0.00")</b></p>
+			</div>
+		</div>
+	</div>
+	<!-- Ortalama Nem -->
+	<div class="col-md-3 col-sm-6">
+		<div class="card text-center shadow-sm gradient-card">
+			<div class="card-body">
+				<h6 class="card-subtitle mb-2">Ortalama Nem (%)</h6>
+				<h3 class="card-title">@Model.AverageReadingMoistureValue.ToString("0.00")</h3>
+			</div>
+		</div>
+	</div>
 
 
-            <!-- Ortalama Sıcaklık -->
-            <div class="col-md-3 col-sm-6">
-                <div class="card text-center shadow-sm gradient-card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2">Ortalama Sıcaklık (°C)</h6>
-                        <h3 class="card-title">@Model.AverageReadingTemperatureValue.ToString("0.00")</h3>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Ortalama Nem -->
-            <div class="col-md-3 col-sm-6">
-                <div class="card text-center shadow-sm gradient-card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2">Ortalama Nem (%)</h6>
-                        <h3 class="card-title">@Model.AverageReadingMoistureValue.ToString("0.00")</h3>
-                    </div>
-                </div>
-            </div>
+	
 
-            <!-- Ortalama Gecikme -->
-            <div class="col-md-3 col-sm-6">
-                <div class="card text-center shadow-sm gradient-card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2">Ortalama Gecikme (sn)</h6>
-                        <h3 class="card-title">@Model.AverageLatency.ToString("0")</h3>
-                    </div>
-                </div>
-            </div>
+	<!-- Max / Min Nem -->
+	<div class="col-md-3 col-sm-6">
+		<div class="card shadow-sm gradient-card">
+			<div class="card-body">
+				<h6 class="card-subtitle mb-2">Nem (%)</h6>
+				<p class="mb-1">Max: <b>@Model.MaxMoistureValue.ToString("0.00")</b></p>
+				<p class="mb-0">Min: <b>@Model.MinMoistureValue.ToString("0.00")</b></p>
+			</div>
+		</div>
+	</div>
 
-            <!-- Max / Min Sıcaklık -->
-            <div class="col-md-3 col-sm-6">
-                <div class="card shadow-sm gradient-card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2">Sıcaklık (°C)</h6>
-                        <p class="mb-1">Max: <b>@Model.MaxTemperatureValue.ToString("0.00")</b></p>
-                        <p class="mb-0">Min: <b>@Model.MinTemperatureValue.ToString("0.00")</b></p>
-                    </div>
-                </div>
-            </div>
+	<div class="col-md-6 col-sm-6">
+		<div class="card text-center shadow-sm bg-danger text-white">
+			<div class="card-body">
+				<h6 class="card-subtitle mb-2">Threshold Aşımı</h6>
+				<h3 class="card-title">@Model.thresholdExceededCount</h3>
+			</div>
+		</div>
+	</div>
 
-            <!-- Max / Min Nem -->
-            <div class="col-md-3 col-sm-6">
-                <div class="card shadow-sm gradient-card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2">Nem (%)</h6>
-                        <p class="mb-1">Max: <b>@Model.MaxMoistureValue.ToString("0.00")</b></p>
-                        <p class="mb-0">Min: <b>@Model.MinMoistureValue.ToString("0.00")</b></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-sm-6">
-                <div class="card text-center shadow-sm bg-danger text-white">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2">Threshold Aşımı</h6>
-                        <h3 class="card-title">@Model.thresholdExceededCount</h3>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-sm-6">
-                <div class="card text-center shadow-sm bg-danger text-white">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2">Okunmamış Alert Sayısı</h6>
-                        <h3 class="card-title">@Model.UnreadAlertCount</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
+	<div class="col-md-6 col-sm-6">
+		<div class="card text-center shadow-sm bg-danger text-white">
+			<div class="card-body">
+				<h6 class="card-subtitle mb-2">Okunmamış Alert Sayısı</h6>
+				<h3 class="card-title">@Model.UnreadAlertCount</h3>
+			</div>
+		</div>
+	</div>
+</div>
 
 
 
 <style>
-    /* Gradient renkler: #354A9D → #268D8A → #19A872 */
-    .gradient-card {
-        background: linear-gradient(135deg, #354A9D, #268D8A, #19A872);
-        color: white;
-        transition: none; /* hover efekt yok */
-        height:100%;
-    }
+	/* Gradient renkler: #354A9D → #268D8A → #19A872 */
+	.gradient-card {
+		background: linear-gradient(135deg, #354A9D, #268D8A, #19A872);
+		color: white;
+		transition: none; /* hover efekt yok */
+		height: 100%;
+	}
 
-    /* Kart başlık ve değer kontrastı */
-    .card-subtitle {
-        font-size: 0.9rem;
-        opacity: 0.85;
-    }
+	/* Kart başlık ve değer kontrastı */
+	.card-subtitle {
+		font-size: 0.9rem;
+		opacity: 0.85;
+	}
 
-    .card-title {
-        font-size: 1.8rem;
-        font-weight: 700;
-    }
+	.card-title {
+		font-size: 1.8rem;
+		font-weight: 700;
+	}
 
-    /* Threshold kırmızı kart hover kaldırılmış */
-    .bg-danger {
-        transition: none !important;
-    }
+	/* Threshold kırmızı kart hover kaldırılmış */
+	.bg-danger {
+		transition: none !important;
+	}
 </style>
