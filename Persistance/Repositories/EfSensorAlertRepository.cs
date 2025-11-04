@@ -15,7 +15,7 @@ public class EfSensorAlertRepository : EfGenericRepository<SensorAlert>, ISensor
     {
         var result = _context.Set<SensorAlert>()
             .Include(sa => sa.SensorData)
-            .ThenInclude(sd => sd.Sensor)
+            .ThenInclude(sd => sd.Sensor).OrderByDescending(sa => sa.AlertTime)
             .ToListAsync();
         return result;
     }

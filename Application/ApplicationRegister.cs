@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Application.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,11 @@ namespace Application
     {
         public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
         {
-            services.AddMediatR(conf =>{
+            services.AddMediatR(conf =>
+            {
                 conf.RegisterServicesFromAssembly(typeof(ApplicationRegister).Assembly);
             });
-
+            services.AddScoped<SeedDataProvider>();
             return services;
         }
     }
