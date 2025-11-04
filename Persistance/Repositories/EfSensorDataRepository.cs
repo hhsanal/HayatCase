@@ -22,7 +22,10 @@ public class EfSensorDataRepository : EfGenericRepository<SensorData>, ISensorDa
     public async Task<DashboardSensorDataDto> GetDashboardStats()
     {
         DashboardSensorDataDto dashboardSensorDataDto = new DashboardSensorDataDto();
-        dashboardSensorDataDto.TotalDataCount = await _context.Set<SensorData>().CountAsync();
+        int dataCount  = await _context.Set<SensorData>().CountAsync();
+        if(dataCount == 0)
+            return dashboardSensorDataDto;
+        dashboardSensorDataDto.TotalDataCount = dataCount;
         dashboardSensorDataDto.thresholdExceededCount = await _context.Set<SensorData>().Where(x => x.Sensor.ThresholdValue < x.Value).CountAsync();
         dashboardSensorDataDto.AverageReadingTemperatureValue = await _context.Set<SensorData>().Where(x => x.Sensor.Unit == SensorUnit.Celsius).AverageAsync(sd => sd.Value);
         dashboardSensorDataDto.MaxTemperatureValue = await _context.Set<SensorData>().Where(x => x.Sensor.Unit == SensorUnit.Celsius).MaxAsync(sd => sd.Value);
