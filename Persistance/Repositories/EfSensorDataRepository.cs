@@ -23,7 +23,7 @@ public class EfSensorDataRepository : EfGenericRepository<SensorData>, ISensorDa
     {
         DashboardSensorDataDto dashboardSensorDataDto = new DashboardSensorDataDto();
         dashboardSensorDataDto.TotalDataCount = await _context.Set<SensorData>().CountAsync();
-        dashboardSensorDataDto.thresholdExceededCount = await _context.Set<SensorData>().Where(x => x.Sensor.ThresholdValue <= x.Value).CountAsync();
+        dashboardSensorDataDto.thresholdExceededCount = await _context.Set<SensorData>().Where(x => x.Sensor.ThresholdValue < x.Value).CountAsync();
         dashboardSensorDataDto.AverageReadingTemperatureValue = await _context.Set<SensorData>().Where(x => x.Sensor.Unit == SensorUnit.Celsius).AverageAsync(sd => sd.Value);
         dashboardSensorDataDto.MaxTemperatureValue = await _context.Set<SensorData>().Where(x => x.Sensor.Unit == SensorUnit.Celsius).MaxAsync(sd => sd.Value);
         dashboardSensorDataDto.MinTemperatureValue = await _context.Set<SensorData>().Where(x => x.Sensor.Unit == SensorUnit.Celsius).MinAsync(sd => sd.Value);
@@ -31,7 +31,7 @@ public class EfSensorDataRepository : EfGenericRepository<SensorData>, ISensorDa
         dashboardSensorDataDto.MaxMoistureValue = await _context.Set<SensorData>().Where(x => x.Sensor.Unit == SensorUnit.Percentage).MaxAsync(sd => sd.Value);
         dashboardSensorDataDto.MinMoistureValue = await _context.Set<SensorData>().Where(x => x.Sensor.Unit == SensorUnit.Percentage).MinAsync(sd => sd.Value);
         dashboardSensorDataDto.AverageLatency =  (decimal) _context.Set<SensorData>().AsEnumerable().Average(x => x.DelayTime.TotalSeconds);
-
+        dashboardSensorDataDto.UnreadAlertCount = await _context.Set<SensorAlert>().Where(x => !x.IsAcknowledged).CountAsync();
         return dashboardSensorDataDto;
     }
 }

@@ -10,4 +10,5 @@ public class GetAllAlertResponse
     public decimal ThresholdValue { get; set; }
     public TimeSpan DelayTime { get; set; }
     public DateTimeOffset AlertTime { get; set; }
+    public bool IsAcknowledged { get; set; }
 }

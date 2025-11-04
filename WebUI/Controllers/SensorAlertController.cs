@@ -1,7 +1,7 @@
 ﻿using Application.Features.SensorAlertFeature.GetAllAlert;
+using Application.Features.SensorAlertFeature.ReadAlert;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace WebUI.Controllers
 {
@@ -11,6 +11,16 @@ namespace WebUI.Controllers
         {
             var result = await sender.Send(new GetAllAlertQuery());
             return View(result.Data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AcknowledgeAlert(Guid alertId)
+        {
+            var result = await sender.Send(new ReadAlertCommand(alertId));
+            if (result.Success)
+            {
+                return RedirectToAction("Index");
+            }
+            return BadRequest(result.Message);
         }
     }
 }

@@ -20,6 +20,7 @@ public class AddSensorDataHandler(ISensorDataRepository sensorDataRepository , I
             SensorId = request.SensorId,
             TimeStamp = request.TimeStamp,
             DelayTime = DateTimeOffset.UtcNow - request.TimeStamp,
+            Value = request.Value,
         };
         await sensorDataRepository.AddAsync(addingData, cancellationToken);
         if (request.Value >= currentSensor.ThresholdValue)

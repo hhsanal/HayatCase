@@ -18,7 +18,24 @@ namespace WebUI.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetSensorDataJson(Guid sensorId)
+        {
+            var sensor = await sender.Send(new GetFactorySensorByIdQuery(sensorId));
+            var result = await sender.Send(new GetSensorDataListBySensorIdQuery(sensorId));
 
+            if (result.Success)
+            {
+                return Json(new
+                {
+                    success = true,
+                    data = result.Data,
+                    sensor = sensor.Data
+                });
+            }
+
+            return Json(new { success = false });
+        }
         public async Task<IActionResult> DataList(Guid SensorId)
         {
             var sensor = await sender.Send(new GetFactorySensorByIdQuery(SensorId));

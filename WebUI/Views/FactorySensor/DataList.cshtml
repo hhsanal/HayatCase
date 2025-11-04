@@ -11,6 +11,14 @@
 		color: white !important;
 	}
 
+	.data-updating {
+		opacity: 0.6;
+		transition: opacity 0.3s ease;
+	}
+
+	.last-update-badge {
+		font-size: 0.85rem;
+	}
 </style>
 
 <div class="row mb-3">
@@ -19,29 +27,33 @@
 			<div class="card-body">
 				<div class="d-flex flex-wrap align-items-center justify-content-between">
 					<div class="mb-2">
-						<h5 class="card-title mb-1">@Model.sensor.Code <span>(Eşik Değeri: @Model.sensor.ThresholdValue)</span> </h5>
+						<h5 class="card-title mb-1">
+							@Model.sensor.Code <span>(Eşik Değeri: <span id="thresholdValue">@Model.sensor.ThresholdValue</span>)</span>
+						</h5>
 						<p class="card-text mb-0">@Model.sensor.Description</p>
 						<small class="text-muted">@Model.sensor.Location</small>
 					</div>
 
-
-					<a class="btn btn-outline-secondary btn-sm" href="javascript:history.back()">
-						<i class="bi bi-arrow-left"></i> Geri dön
-					</a>
+					<div class="d-flex gap-2 align-items-center">
+						<span class="badge bg-success last-update-badge">
+							<i class="bi bi-clock"></i> Son Güncelleme: <span id="lastUpdateTime">Şimdi</span>
+						</span>
+						<a class="btn btn-outline-secondary btn-sm" href="javascript:history.back()">
+							<i class="bi bi-arrow-left"></i> Geri dön
+						</a>
+					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
 </div>
 
-
 <div class="row">
 	<div class="col-md-7 col-sm-6">
-		<div class="card shadow-sm ">
+		<div class="card shadow-sm">
 			<div class="card-body py-1 px-0">
 				<div class="table-responsive">
-					<table class="table mb-0">
+					<table class="table mb-0" id="sensorDataTable">
 						<thead class="table-light">
 							<tr>
 								<th scope="col">TimeStamp</th>
@@ -53,11 +65,8 @@
 							@foreach (var data in Model.data)
 							{
 								<tr>
-
-
 									<td class="@(data.isThresholdExceeded ? "threshold-exceeded" : "")">@data.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
 									<td class="@(data.isThresholdExceeded ? "threshold-exceeded" : "")">@data.DelayTime</td>
-
 									<td class="@(data.isThresholdExceeded ? "threshold-exceeded" : "")">
 										@switch (Model.sensor.Unit)
 										{
@@ -82,3 +91,95 @@
 	</div>
 	<div class="col-md-5 col-sm-6"></div>
 </div>
+
+@section Scripts {
+	<script>
+		const sensorId = '@Model.sensor.Id';
+		const sensorUnit = '@Model.sensor.Unit';
+		let pollingInterval;
+		let lastUpdateTimestamp = new Date();
+
+		// Zaman farkını hesapla ve göster
+		function updateTimeDifference() {
+			const now = new Date();
+			const diffSeconds = Math.floor((now - lastUpdateTimestamp) / 1000);
+			$('#lastUpdateTime').text(diffSeconds === 0 ? 'Şimdi' : diffSeconds + ' saniye önce');
+		}
+
+		// Sensör verisini güncelle
+		function fetchSensorData() {
+			const table = $('#sensorDataTable tbody');
+			table.addClass('data-updating');
+
+			$.ajax({
+				url: '@Url.Action("GetSensorDataJson", "FactorySensor")',
+				type: 'GET',
+				data: { sensorId: sensorId },
+				success: function (response) {
+					if (response.success) {
+						
+						$('#thresholdValue').text(response.sensor.thresholdValue);
+
+						
+						table.empty();
+
+						response.data.forEach(function (item) {
+							const isExceeded = item.isThresholdExceeded;
+							const exceedClass = isExceeded ? 'threshold-exceeded' : '';
+							
+							let valueHtml = '';
+							if (sensorUnit === 'Celsius') {
+								valueHtml = '<span class="' + exceedClass + '">' + item.value + ' °C</span>';
+							} else if (sensorUnit === 'Percentage') {
+								valueHtml = '<span class="' + exceedClass + '">' + item.value + ' %</span>';
+							} else {
+								valueHtml = '<span class="text-secondary ' + exceedClass + '">Bilinmeyen veri tipi</span>';
+							}
+
+							const timestamp = new Date(item.timeStamp).toLocaleString('tr-TR', {
+								year: 'numeric',
+								month: '2-digit',
+								day: '2-digit',
+								hour: '2-digit',
+								minute: '2-digit',
+								second: '2-digit'
+							});
+
+							const row = '<tr>' +
+								'<td class="' + exceedClass + '">' + timestamp + '</td>' +
+								'<td class="' + exceedClass + '">' + item.delayTime + '</td>' +
+								'<td class="' + exceedClass + '">' + valueHtml + '</td>' +
+								'</tr>';
+
+							table.append(row);
+						});
+
+						
+						lastUpdateTimestamp = new Date();
+						updateTimeDifference();
+
+						table.removeClass('data-updating');
+					}
+				},
+				error: function (xhr, status, error) {
+					console.error('Veri güncellenirken hata oluştu:', error);
+					table.removeClass('data-updating');
+				}
+			});
+		}
+
+		
+		$(document).ready(function () {
+			
+			pollingInterval = setInterval(fetchSensorData, 5000);
+
+			
+			setInterval(updateTimeDifference, 1000);
+
+			
+			$(window).on('beforeunload', function () {
+				clearInterval(pollingInterval);
+			});
+		});
+	</script>
+}

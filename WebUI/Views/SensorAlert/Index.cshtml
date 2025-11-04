@@ -2,55 +2,153 @@
 @model List<GetAllAlertResponse>
 
 @{
-    ViewData["Title"] = "Alert Listesi";
+	ViewData["Title"] = "Alert Listesi";
 }
 
 <div class="container-fluid mt-4">
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow-sm">
-       
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th scope="col">Sensör Kodu</th>
-                                    <th scope="col">Uyarı Türü</th>
-                                    <th scope="col">Değer</th>
-                                    <th scope="col">Threshold</th>
-                                    <th scope="col">Aşım Miktarı</th>
-                                    <th scope="col">Gecikme</th>
-                                    <th scope="col">Uyarı Zamanı</th>
-                                    <th scope="col">İşlemler</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var alert in Model)
-                                {
-                                    <tr class="@(alert.Value > alert.ThresholdValue ? "bg-danger text-white" : "")">
-                                        <td>@alert.SensorCode</td>
-                                        <td>@alert.AlertType</td>
-                                        <td>@alert.Value.ToString("0.00")</td>
-                                        <td>@alert.ThresholdValue.ToString("0.00")</td>
-                                        <td>@(alert.Value - alert.ThresholdValue) </td>
-                                        <td>@alert.DelayTime.TotalSeconds.ToString("0.00") s</td>
-                                        <td>@alert.AlertTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                                        <td></td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card shadow-sm">
+
+				<div class="card-body p-0">
+					<div class="table-wrapper">
+
+						<table class="table table-hover table-striped mb-0">
+							<thead class="table-light sticky-top">
+								<tr>
+									<th scope="col">Durum</th>
+									<th scope="col">Sensör Kodu</th>
+									<th scope="col">Uyarı Türü</th>
+									<th scope="col">Değer</th>
+									<th scope="col">Threshold</th>
+									<th scope="col">Aşım Miktarı</th>
+									<th scope="col">Gecikme</th>
+									<th scope="col">Uyarı Zamanı</th>
+									<th scope="col">İşlemler</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var alert in Model)
+								{
+									<tr class="@(alert.IsAcknowledged ? "acknowledged-row" : "") @(alert.Value > alert.ThresholdValue && !alert.IsAcknowledged ? "bg-danger text-white" : "")" data-alert-id="@alert.Id">
+										<td>
+											@if (alert.IsAcknowledged)
+											{
+												<span class="badge bg-success">
+													<i class="bi bi-check-circle-fill"></i> Okundu
+												</span>
+											}
+											else
+											{
+												<span class="badge bg-warning text-dark">
+													<i class="bi bi-exclamation-triangle-fill"></i> Yeni
+												</span>
+											}
+										</td>
+										<td>@alert.SensorCode</td>
+										<td>@alert.AlertType</td>
+										<td>@alert.Value.ToString("0.00")</td>
+										<td>@alert.ThresholdValue.ToString("0.00")</td>
+										<td>@(alert.Value - alert.ThresholdValue) </td>
+										<td>@alert.DelayTime.TotalSeconds.ToString("0.00") s</td>
+										<td>@alert.AlertTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+										<td>
+											@if (!alert.IsAcknowledged)
+											{
+												<button class="btn btn-light acknowledge-btn" data-alert-id="@alert.Id">
+													<i class="bi bi-eye"></i> Onayla
+												</button>
+											}
+											else
+											{
+												<span class="text-muted">
+													<i class="bi bi-check2"></i> Onaylandı
+												</span>
+											}
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <style>
-    /* Hover ile arka plan değişmesin, sadece threshold aşımı kırmızı */
-    .table-hover tbody tr:hover {
-        background-color: inherit;
-    }
+	.table-hover tbody tr:hover {
+		background-color: rgba(0, 0, 0, 0.05);
+	}
+
+	.table-wrapper {
+		max-height: 700px;
+		overflow-y: auto;
+		overflow-x: auto;
+		display: block;
+	}
+
+	table.table {
+		min-width: 600px;
+	}
+
+	.acknowledged-row {
+		opacity: 0.6;
+		background-color: #f8f9fa !important;
+	}
+
+	.acknowledged-row td {
+		color: #6c757d !important;
+	}
+
+	.acknowledged-row:hover {
+		opacity: 0.8 !important;
+	}
 </style>
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$('.acknowledge-btn').on('click', function () {
+				const button = $(this);
+				const alertId = button.data('alert-id');
+				const row = button.closest('tr');
+
+				button.prop('disabled', true);
+				button.html('<span class="spinner-border spinner-border-sm" role="status"></span>');
+
+				$.ajax({
+					url: '@Url.Action("AcknowledgeAlert", "SensorAlert")',
+					type: 'POST',
+					data: {
+						alertId: alertId,
+						__RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+					},
+					success: function (response) {
+						
+						row.removeClass('bg-danger text-white').addClass('acknowledged-row');
+						
+						
+						row.find('td:first').html('<span class="badge bg-success"><i class="bi bi-check-circle-fill"></i> Okundu</span>');
+						
+					
+						button.parent().html('<span class="text-muted"><i class="bi bi-check2"></i> Onaylandı</span>');
+						
+						
+						row.fadeOut(150).fadeIn(150);
+					},
+					error: function (xhr, status, error) {
+						
+						button.prop('disabled', false);
+						button.html('<i class="bi bi-eye"></i> Onayla');
+						alert('Uyarı onaylanırken bir hata oluştu: ' + (xhr.responseText || error));
+					}
+				});
+			});
+		});
+	</script>
+}
+
+@Html.AntiForgeryToken()

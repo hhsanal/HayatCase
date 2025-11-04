@@ -1,10 +1,7 @@
 ﻿@using Application.Features.SensorDataFeature.GetDashboardStatistic
 @model DashboardStatisticVm
 
-<div class="row">
-    <div class="col-md-3 col-sm-6">
-    </div>
-    <div class="col-md-9 col-sm-6"> 
+
         <div class="row g-3">
 
             <!-- Toplam Sensör Sayısı -->
@@ -90,8 +87,7 @@
                 </div>
             </div>
 
-            <!-- Threshold Aşan Veri -->
-            <div class="col-md-12 col-sm-6">
+            <div class="col-md-6 col-sm-6">
                 <div class="card text-center shadow-sm bg-danger text-white">
                     <div class="card-body">
                         <h6 class="card-subtitle mb-2">Threshold Aşımı</h6>
@@ -99,11 +95,18 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-6 col-sm-6">
+                <div class="card text-center shadow-sm bg-danger text-white">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2">Okunmamış Alert Sayısı</h6>
+                        <h3 class="card-title">@Model.UnreadAlertCount</h3>
+                    </div>
+                </div>
+            </div>
         </div>
 
-    </div>
-   
-</div>
+
 
 <style>
     /* Gradient renkler: #354A9D → #268D8A → #19A872 */

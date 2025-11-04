@@ -20,6 +20,7 @@ public class GetAllAlertHandler(ISensorAlertRepository sensorAlertRepository) : 
             ThresholdValue = alert.SensorData.Sensor.ThresholdValue,
             DelayTime = alert.SensorData.DelayTime,
             AlertTime = alert.AlertTime,
+            IsAcknowledged = alert.IsAcknowledged
         }).ToList();
         return new SuccessDataResult<List<GetAllAlertResponse>>(alerts);
     }

@@ -17,5 +17,6 @@ namespace Domain.Dtos
         public decimal MaxMoistureValue { get; set; }
         public decimal MinMoistureValue { get; set; }
         public int thresholdExceededCount { get; set; }
+        public int UnreadAlertCount { get; set; }
     }
 }
