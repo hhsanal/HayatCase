@@ -5,7 +5,7 @@ Amaç; sensör verilerini işleyip, eşik değerlerini izleyen, anomali tespiti 
 
 ## Kullanılan Teknolojiler
 
-- **.NET 8 / C#**
+- **.NET 9 / C#**
 - **Entity Framework Core**
 - **ASP.NET MVC / Razor**
 - **Dependency Injection (DI)**
@@ -21,6 +21,8 @@ Projeyi yerel ortamında çalıştırmak için aşağıdaki adımları izle:
 ### 1️ Reponun klonlanması
 git clone https://github.com/hhsanal/HayatCase.git
 ```
+proje visual studio 2026 ile geliştirildiği için solution dosyasının uzantısı .sln yerine .slnx olarak gelmektedir.
+Bu farktan dolayı visual studio nun daha alt sürümleri ile açılırken bir uyarı almanız doğaldır.
 
 ### 2 Bağımlılıkların yüklenmesi
 ```
@@ -42,6 +44,8 @@ default verilerin yüklenebilmesi için WebUI projesini 1 kere çalıştır ki b
 ve veriler (sensör bilgileri) database ye yüklensin 
 
 ### 6 Simülasyon projesini başlatma 
-bu solutionda bulunan SimulationWorker projesidir. bu proje background service olarak çalışır ve sensör gibi hareket eder
-5 saniye aralıklarla sisteme API aracılığı ile dummy sensör verileri gönderir. Visual studioda solutionun başlangıç seçeneklerini 
-Multiple olarak seçebilirsin bu sayede hem WebUI projesini hemde Worker serviceyi aynı anda daha kolay çalıştırabilirsin. 
+bu solutionda bulunan SimulationWorker projesidir. bu proje background service olarak çalışır ve sensör gibi hareket eder.
+5 saniye aralıklarla sisteme API aracılığı ile dummy sensör verileri gönderir. Worker service projesini çalıştırmadan önce
+workerda ki istek atılacak endpointin portlarının WebUI projesinin çalıştığı port olup olmadığını kontrol et değilse aynı
+port olacak şekilde değiştir. Visual studioda solutionun başlangıç seçeneklerini Multiple olarak seçebilirsin bu sayede hem
+WebUI projesini hemde Worker serviceyi aynı anda daha kolay çalıştırabilirsin.
