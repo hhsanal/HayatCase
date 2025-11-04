@@ -57,5 +57,5 @@ ve veriler (sensör bilgileri) database ye yüklensin
 bu solutionda bulunan SimulationWorker projesidir. bu proje background service olarak çalışır ve sensör gibi hareket eder.
 5 saniye aralıklarla sisteme API aracılığı ile dummy sensör verileri gönderir. Worker service projesini çalıştırmadan önce
 workerda ki istek atılacak endpointin portlarının WebUI projesinin çalıştığı port olup olmadığını kontrol et değilse aynı
-port olacak şekilde değiştir. Visual studioda solutionun başlangıç seçeneklerini Multiple olarak seçebilirsin bu sayede hem
+port olacak şekilde değiştir. bu değişikliği appsettings.josn dosyasından yapabilirsin. Visual studioda solutionun başlangıç seçeneklerini Multiple olarak seçebilirsin bu sayede hem
 WebUI projesini hemde Worker serviceyi aynı anda daha kolay çalıştırabilirsin.
